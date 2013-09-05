@@ -6,13 +6,13 @@
 //
 //  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 //  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-//  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer 
-//  in the documentation and/or other materials provided with the distribution. Neither the name of the Double Encore Inc. nor the names of its 
+//  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+//  in the documentation and/or other materials provided with the distribution. Neither the name of the Double Encore Inc. nor the names of its
 //  contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-//  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS 
-//  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
-//  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+//  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+//  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+//  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
@@ -69,7 +69,7 @@ NSString * const twitterStatusKey = @"status";
     _delegate = nil;
     [_postConnection cancel];
     [_postConnection release], _postConnection = nil;
-  
+
     [super dealloc];
 }
 
@@ -99,18 +99,18 @@ NSString * const twitterStatusKey = @"status";
 - (void)postTweet:(NSString *)tweetText withImages:(NSArray *)images fromAccount:(id)account
 {
     NSURLRequest *postRequest = nil;
-    if ([UIDevice de_isIOS5] && account != nil) {        
+    if ([UIDevice de_isIOS5] && account != nil) {
         TWRequest *twRequest = nil;
         if ([images count] > 0) {
             twRequest = [[[TWRequest alloc] initWithURL:[NSURL URLWithString:twitterPostWithImagesURLString]
                                             parameters:nil requestMethod:TWRequestMethodPOST] autorelease];
-            
+
             [images enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 UIImage *image = (UIImage *)obj;
-                [twRequest addMultiPartData:UIImagePNGRepresentation(image) withName:@"media[]" type:@"multipart/form-data"];
+                [twRequest addMultiPartData:UIImageJPEGRepresentation(image, 1.0f) withName:@"media[]" type:@"multipart/form-data"];
             }];
-            
-            [twRequest addMultiPartData:[tweetText dataUsingEncoding:NSUTF8StringEncoding] 
+
+            [twRequest addMultiPartData:[tweetText dataUsingEncoding:NSUTF8StringEncoding]
                              withName:twitterStatusKey type:@"multipart/form-data"];
         }
         else {
@@ -127,7 +127,7 @@ NSString * const twitterStatusKey = @"status";
     else {
         postRequest = [self NSURLRequestForTweet:tweetText withImages:images];
     }
-    
+
     if ([NSURLConnection canHandleRequest:postRequest]) {
         self.postConnection = [NSURLConnection connectionWithRequest:postRequest delegate:self];
         [self.postConnection start];
@@ -145,46 +145,46 @@ NSString * const twitterStatusKey = @"status";
                                             tweetText, twitterStatusKey,
                                             @"t", @"trim_user",
                                             nil];
-    
+
     NSMutableArray *postKeysAndValues = [NSMutableArray array];
-    
-    for (NSString *key in [tweetParameters allKeys]) {		
+
+    for (NSString *key in [tweetParameters allKeys]) {
         [postKeysAndValues addObject:[NSString stringWithFormat:@"%@=%@", key, [(NSString *)[tweetParameters objectForKey:key] encodedURLParameterString]]];
     }
-    
+
     NSString *postString = [NSString stringWithFormat:@"%@", [postKeysAndValues componentsJoinedByString:@"&"]];
-    
+
     NSURL *postURL = [NSURL URLWithString:twitterPostURLString];
     if ([images count] > 0) {
         postURL = [NSURL URLWithString:twitterPostWithImagesURLString];
     }
-    
+
     OAuth *oAuth = [[[OAuth alloc] initWithConsumerKey:kDEConsumerKey andConsumerSecret:kDEConsumerSecret] autorelease];
     [oAuth loadOAuthContext];
 
     NSString *header = nil;
-    
+
     NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:postURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60 * 2];
     [postRequest setHTTPMethod:@"POST"];
-    
+
     if ([images count] > 0) {
         header = [oAuth oAuthHeaderForMethod:@"POST" andUrl:[postURL absoluteString] andParams:nil];
         NSString *stringBoundary = @"dOuBlEeNcOrEbOuNdArY";
         [postRequest setValue:[NSString stringWithFormat:@"multipart/form-data; boundary=%@", stringBoundary] forHTTPHeaderField:@"Content-Type"];
-        
+
         postData = [NSMutableData data];
         [postData appendData:[[NSString stringWithFormat:@"--%@\r\n",stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        
+
         for (NSString *key in [tweetParameters allKeys]) {
             [postData appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", key] dataUsingEncoding:NSUTF8StringEncoding]];
             [postData appendData:[[NSString stringWithFormat:@"%@", [tweetParameters objectForKey:key]] dataUsingEncoding:NSUTF8StringEncoding]];
             [postData appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
         }
-        
+
         for (UIImage *image in images) {
             [postData appendData:[@"Content-Disposition: form-data; name=\"media[]\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [postData appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];            
-            [postData appendData:UIImagePNGRepresentation(image)];
+            [postData appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [postData appendData:UIImageJPEGRepresentation(image, 1.0f)];
             [postData appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", stringBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
         }
     }
@@ -194,10 +194,10 @@ NSString * const twitterStatusKey = @"status";
         postData = [[[postString dataUsingEncoding:NSUTF8StringEncoding] mutableCopy] autorelease];
         [postRequest setValue:[NSString stringWithFormat:@"%d", [postData length]] forHTTPHeaderField:@"Content-Length"];
     }
-    
+
     [postRequest setHTTPBody:postData];
     [postRequest addValue:header forHTTPHeaderField:@"Authorization"];
-    
+
     return postRequest;
 }
 
@@ -243,7 +243,7 @@ NSString * const twitterStatusKey = @"status";
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSHTTPURLResponse *)response
 {
     NSInteger statusCode = [response statusCode];
-    
+
     NSRange successRange = NSMakeRange(200, 5);
     if (NSLocationInRange(statusCode, successRange)) {
         [self sendSuccessToDelegate];
