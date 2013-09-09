@@ -6,13 +6,13 @@
     //
     //  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
     //  Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    //  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer 
-    //  in the documentation and/or other materials provided with the distribution. Neither the name of the Double Encore Inc. nor the names of its 
+    //  Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer
+    //  in the documentation and/or other materials provided with the distribution. Neither the name of the Double Encore Inc. nor the names of its
     //  contributors may be used to endorse or promote products derived from this software without specific prior written permission.
-    //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
-    //  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS 
-    //  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE 
-    //  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT 
+    //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    //  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
+    //  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+    //  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
     //  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     //
 
@@ -123,7 +123,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([UIDevice de_isIOS5]) {
         ACAccountStore *accountStore = [[[ACAccountStore alloc] init] autorelease];
         ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
-        
+
         __block BOOL accessGranted = NO;
         [accountStore requestAccessToAccountsWithType:twitterAccountType
                                 withCompletionHandler:^(BOOL granted, NSError *error) {
@@ -134,10 +134,10 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         while (waitingForAccess) {
             sleep(1);
         }
-        
+
         return accessGranted;
     }
-    
+
     return YES;
 }
 
@@ -145,7 +145,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 + (BOOL)canSendTweet
 {
     BOOL canSendTweet = NO;
-    
+
     if ([UIDevice de_isIOS5] && [[self class] canAccessTwitterAccounts]) {
         ACAccountStore *accountStore = [[[ACAccountStore alloc] init] autorelease];
         ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -154,11 +154,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
             canSendTweet = YES;
         }
     }
-    
+
     if ([OAuth isTwitterAuthorized]) {
         canSendTweet = YES;
     }
-    
+
     return canSendTweet;
 }
 
@@ -193,7 +193,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     CGRect rect = [keyWindow bounds];
     UIGraphicsBeginImageContext(rect.size);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     if (![[UIApplication sharedApplication] isStatusBarHidden]) {
         CGFloat statusBarOffset = -20.0f;
         if ( UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication]statusBarOrientation]))
@@ -205,11 +205,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
             CGContextTranslateCTM(context, 0.0f, statusBarOffset);
         }
     }
-    
-    [keyWindow.layer renderInContext:context];   
+
+    [keyWindow.layer renderInContext:context];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     UIImageOrientation imageOrientation;
     switch ([UIApplication sharedApplication].statusBarOrientation) {
         case UIInterfaceOrientationLandscapeLeft:
@@ -227,7 +227,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         default:
             break;
     }
-    
+
     UIImage *outputImage = [[[UIImage alloc] initWithCGImage: image.CGImage
                                                       scale: 1.0
                                                 orientation: imageOrientation] autorelease];
@@ -282,10 +282,10 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     [_attachment2ImageView release], _attachment2ImageView = nil;
     [_attachment3ImageView release], _attachment3ImageView = nil;
     [_characterCountLabel release], _characterCountLabel = nil;
-    
+
         // Public
     [_completionHandler release], _completionHandler = nil;
-    
+
         // Private
     [_text release], _text = nil;
     [_images release], _images = nil;
@@ -298,7 +298,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     [_accountPickerPopoverController release], _accountPickerPopoverController = nil;
     [_twitterAccount release], _twitterAccount = nil;
     [_oAuth release], _oAuth = nil;
-    
+
     [super dealloc];
 }
 
@@ -311,7 +311,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     self.view.backgroundColor = [UIColor clearColor];
     self.textViewContainer.backgroundColor = [UIColor clearColor];
     self.textView.backgroundColor = [UIColor clearColor];
-    
+
     if ([UIDevice de_isIOS5]) {
         self.fromViewController = self.presentingViewController;
         self.textView.keyboardType = UIKeyboardTypeTwitter;
@@ -319,7 +319,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     else {
         self.fromViewController = self.parentViewController;
     }
-    
+
         // Put the attachment frames and image views into arrays so they're easier to work with.
         // Order is important, so we can't use IB object arrays. Or at least this is easier.
     self.attachmentFrameViews = [NSArray arrayWithObjects:
@@ -327,28 +327,28 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
                                  self.attachment2FrameView,
                                  self.attachment3FrameView,
                                  nil];
-    
+
     self.attachmentImageViews = [NSArray arrayWithObjects:
                                  self.attachment1ImageView,
                                  self.attachment2ImageView,
                                  self.attachment3ImageView,
                                  nil];
-    
+
         // Now add some angle to attachments 2 and 3.
     self.attachment2FrameView.transform = CGAffineTransformMakeRotation(degreesToRadians(-6.0f));
     self.attachment2ImageView.transform = CGAffineTransformMakeRotation(degreesToRadians(-6.0f));
     self.attachment3FrameView.transform = CGAffineTransformMakeRotation(degreesToRadians(-12.0f));
     self.attachment3ImageView.transform = CGAffineTransformMakeRotation(degreesToRadians(-12.0f));
-    
+
         // Mask the corners on the image views so they don't stick out of the frame.
     [self.attachmentImageViews enumerateObjectsUsingBlock:^(id obj, NSUInteger index, BOOL *stop) {
         ((UIImageView *)obj).layer.cornerRadius = 3.0f;
         ((UIImageView *)obj).layer.masksToBounds = YES;
     }];
-    
+
     self.textView.text = self.text;
     [self.textView becomeFirstResponder];
-    
+
     [self updateCharacterCount];
     [self updateAttachments];
 }
@@ -372,7 +372,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     self.backgroundImageView.alpha = 0.0f;
     self.backgroundImageView.backgroundColor = [UIColor lightGrayColor];
     [self.view insertSubview:self.backgroundImageView atIndex:0];
-    
+
         // Now let's fade in a gradient view over the presenting view.
     self.gradientView = [[[DETweetGradientView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds] autorelease];
     self.gradientView.autoresizingMask = UIViewAutoresizingNone;
@@ -383,17 +383,17 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     [UIView animateWithDuration:0.3f
                      animations:^ {
                          self.gradientView.alpha = 1.0f;
-                     }];    
-    
+                     }];
+
     self.previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES]; 
-    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+
     [self updateFramesForOrientation:self.interfaceOrientation];
-    
+
     [self checkTwitterCredentials];
-    
+
     [self selectTwitterAccount];  // Set or verify our default account.
-    
+
         // Like TWTweetComposeViewController, we'll let the user change the account only if
         // we're in portrait orientation on iPhone. iPad can do it in any orientation.
     if ([[DETweetPoster accounts] count] > 1
@@ -409,7 +409,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     self.backgroundImageView.alpha = 1.0f;
     //self.backgroundImageView.frame = [self.view convertRect:self.backgroundImageView.frame fromView:[UIApplication sharedApplication].keyWindow];
     [self.view insertSubview:self.gradientView aboveSubview:self.backgroundImageView];
@@ -419,13 +419,13 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+
     UIView *presentingView = [UIDevice de_isIOS5] ? self.fromViewController.view : self.parentViewController.view;
     [presentingView addSubview:self.gradientView];
-    
+
     [self.backgroundImageView removeFromSuperview];
     self.backgroundImageView = nil;
-    
+
     [UIView animateWithDuration:0.3f
                      animations:^ {
                          self.gradientView.alpha = 0.0f;
@@ -433,7 +433,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
                      completion:^(BOOL finished) {
                          [self.gradientView removeFromSuperview];
                      }];
-    
+
     [[UIApplication sharedApplication] setStatusBarStyle:self.previousStatusBarStyle animated:YES];
 }
 
@@ -443,7 +443,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([self.parentViewController respondsToSelector:@selector(shouldAutorotateToInterfaceOrientation:)]) {
         return [self.parentViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
-    
+
     if ([UIDevice de_isPhone]) {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     }
@@ -456,7 +456,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 {
     [self updateFramesForOrientation:interfaceOrientation];
     self.accountPickerView.alpha = 0.0f;
-    
+
         // Our fake background won't rotate properly. Just hide it.
     if (interfaceOrientation == self.presentedViewController.interfaceOrientation) {
         self.backgroundImageView.alpha = 1.0f;
@@ -471,7 +471,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 {
     [self.accountPickerView removeFromSuperview];
     self.accountPickerView = nil;  // Easier to recreate it next time rather than resize it.
-    
+
     if (self.accountPickerPopoverController) {
         [self presentAccountPicker];
     }
@@ -486,10 +486,10 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         //  _images
         //  _urls
         //  _twitterAccount
-    
+
         // Save the text.
     self.text = self.textView.text;
-    
+
         // IBOutlets
     self.cardView = nil;
     self.titleLabel = nil;
@@ -506,7 +506,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     self.attachment2ImageView = nil;
     self.attachment3ImageView = nil;
     self.characterCountLabel = nil;
-    
+
         // Private
     self.attachmentFrameViews = nil;
     self.attachmentImageViews = nil;
@@ -514,7 +514,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     self.accountPickerView = nil;
     self.accountPickerPopoverController = nil;
     self.oAuth = nil;
-    
+
     [super viewDidUnload];
 }
 
@@ -526,14 +526,14 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([self isPresented]) {
         return NO;
     }
-    
+
     if (([self charactersAvailable] - (NSInteger)[initialText length]) < 0) {
         return NO;
     }
-    
+
     self.text = initialText;  // Keep a copy in case the view isn't loaded yet.
     self.textView.text = self.text;
-    
+
     return YES;
 }
 
@@ -543,23 +543,23 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if (image == nil) {
         return NO;
     }
-    
+
     if ([self isPresented]) {
         return NO;
     }
-    
+
     if ([self.images count] >= DETweetMaxImages) {
         return NO;
     }
-    
+
     if ([self attachmentsCount] >= 3) {
         return NO;  // Only three allowed.
     }
-    
+
     if (([self charactersAvailable] - (DETweetURLLength + 1)) < 0) {  // Add one for the space character.
         return NO;
     }
-    
+
     [self.images addObject:image];
     return YES;
 }
@@ -579,7 +579,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([self isPresented]) {
         return NO;
     }
-    
+
     [self.images removeAllObjects];
     return YES;
 }
@@ -590,19 +590,19 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if (url == nil) {
         return NO;
     }
-    
+
     if ([self isPresented]) {
         return NO;
     }
-    
+
     if ([self attachmentsCount] >= 3) {
         return NO;  // Only three allowed.
     }
-    
+
     if (([self charactersAvailable] - (DETweetURLLength + 1)) < 0) {  // Add one for the space character.
         return NO;
     }
-    
+
     [self.urls addObject:url];
     return YES;
 }
@@ -613,7 +613,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([self isPresented]) {
         return NO;
     }
-    
+
     [self.urls removeAllObjects];
     return YES;
 }
@@ -622,13 +622,13 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 #pragma mark - Private
 
 - (void)updateFramesForOrientation:(UIInterfaceOrientation)interfaceOrientation
-{    
+{
     CGFloat buttonHorizontalMargin = 8.0f;
     CGFloat cardWidth, cardTop, cardHeight, cardHeaderLineTop, buttonTop;
     UIImage *cancelButtonImage, *sendButtonImage;
     CGFloat titleLabelFontSize, titleLabelTop;
     CGFloat characterCountLeft, characterCountTop;
-    
+
     if ([UIDevice de_isPhone]) {
         cardWidth = CGRectGetWidth(self.view.bounds) - 10.0f;
         if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
@@ -668,21 +668,21 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
             cardTop = 110.0f;
         }
     }
-    
+
     CGFloat cardLeft = trunc((CGRectGetWidth(self.view.bounds) - cardWidth) / 2);
     self.cardView.frame = CGRectMake(cardLeft, cardTop, cardWidth, cardHeight);
-    
+
     self.titleLabel.font = [UIFont boldSystemFontOfSize:titleLabelFontSize];
     self.titleLabel.frame = CGRectMake(0.0f, titleLabelTop, cardWidth, self.titleLabel.frame.size.height);
-    
+
     [self.cancelButton setBackgroundImage:cancelButtonImage forState:UIControlStateNormal];
     self.cancelButton.frame = CGRectMake(buttonHorizontalMargin, buttonTop, self.cancelButton.frame.size.width, cancelButtonImage.size.height);
-    
+
     [self.sendButton setBackgroundImage:sendButtonImage forState:UIControlStateNormal];
     self.sendButton.frame = CGRectMake(self.cardView.bounds.size.width - buttonHorizontalMargin - self.sendButton.frame.size.width, buttonTop, self.sendButton.frame.size.width, sendButtonImage.size.height);
-    
+
     self.cardHeaderLineView.frame = CGRectMake(0.0f, cardHeaderLineTop, self.cardView.bounds.size.width, self.cardHeaderLineView.frame.size.height);
-    
+
     CGFloat textWidth = CGRectGetWidth(self.cardView.bounds);
     if ([self attachmentsCount] > 0) {
         textWidth -= CGRectGetWidth(self.attachment1FrameView.frame) + 10.0f;  // Got to measure frame 1, because it's not rotated. Other frames are funky.
@@ -692,24 +692,24 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     self.textViewContainer.frame = CGRectMake(0.0f, textTop, self.cardView.bounds.size.width, textHeight);
     self.textView.frame = CGRectMake(0.0f, 0.0f, textWidth, self.textViewContainer.frame.size.height);
     self.textView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, -(self.cardView.bounds.size.width - textWidth - 1.0f));
-    
+
     self.paperClipView.frame = CGRectMake(CGRectGetMaxX(self.cardView.frame) - self.paperClipView.frame.size.width + 6.0f,
                                           CGRectGetMinY(self.cardView.frame) + CGRectGetMaxY(self.cardHeaderLineView.frame) - 1.0f,
                                           self.paperClipView.frame.size.width,
                                           self.paperClipView.frame.size.height);
-    
+
         // We need to position the rotated views by their center, not their frame.
         // This isn't elegant, but it is correct. Half-points are required because
         // some frame sizes aren't evenly divisible by 2.
     self.attachment1FrameView.center = CGPointMake(self.cardView.bounds.size.width - 45.0f, CGRectGetMaxY(self.paperClipView.frame) - cardTop + 18.0f);
     self.attachment1ImageView.center = CGPointMake(self.cardView.bounds.size.width - 45.5, self.attachment1FrameView.center.y - 2.0f);
-    
+
     self.attachment2FrameView.center = CGPointMake(self.attachment1FrameView.center.x - 4.0f, self.attachment1FrameView.center.y + 5.0f);
     self.attachment2ImageView.center = CGPointMake(self.attachment1ImageView.center.x - 4.0f, self.attachment1ImageView.center.y + 5.0f);
-    
+
     self.attachment3FrameView.center = CGPointMake(self.attachment2FrameView.center.x - 4.0f, self.attachment2FrameView.center.y + 5.0f);
     self.attachment3ImageView.center = CGPointMake(self.attachment2ImageView.center.x - 4.0f, self.attachment2ImageView.center.y + 5.0f);
-    
+
     characterCountLeft = CGRectGetWidth(self.cardView.frame) - CGRectGetWidth(self.characterCountLabel.frame) - 12.0f;
     characterCountTop = CGRectGetHeight(self.cardView.frame) - CGRectGetHeight(self.characterCountLabel.frame) - 8.0f;
     if ([UIDevice de_isPhone]) {
@@ -721,7 +721,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         }
     }
     self.characterCountLabel.frame = CGRectMake(characterCountLeft, characterCountTop, self.characterCountLabel.frame.size.width, self.characterCountLabel.frame.size.height);
-    
+
     self.gradientView.frame = self.gradientView.superview.bounds;
 }
 
@@ -738,11 +738,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     available -= (DETweetURLLength + 1) * [self.images count];
     available -= (DETweetURLLength + 1) * [self.urls count];
     available -= [self.textView.text length];
-    
+
     if ( (available < DETweetMaxLength) && ([self.textView.text length] == 0) ) {
         available += 1;  // The space we added for the first URL isn't needed.
     }
-    
+
     return available;
 }
 
@@ -750,9 +750,9 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)updateCharacterCount
 {
     NSInteger available = [self charactersAvailable];
-    
+
     self.characterCountLabel.text = [NSString stringWithFormat:@"%d", available];
-    
+
     if (available >= 0) {
         self.characterCountLabel.textColor = [UIColor grayColor];
         self.sendButton.enabled = (available != DETweetMaxLength);  // At least one character is required.
@@ -780,28 +780,28 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         frame.size.width = self.cardView.frame.size.width;
     }
     self.textView.frame = frame;
-    
+
         // Create a array of attachment images to display.
     NSMutableArray *attachmentImages = [NSMutableArray arrayWithArray:self.images];
     for (NSInteger index = 0; index < [self.urls count]; index++) {
         [attachmentImages addObject:[UIImage imageNamed:@"DETweetURLAttachment"]];
     }
-    
+
     self.paperClipView.hidden = YES;
     self.attachment1FrameView.hidden = YES;
     self.attachment2FrameView.hidden = YES;
     self.attachment3FrameView.hidden = YES;
-    
+
     if ([attachmentImages count] >= 1) {
         self.paperClipView.hidden = NO;
         self.attachment1FrameView.hidden = NO;
         self.attachment1ImageView.image = [attachmentImages objectAtIndex:0];
-        
+
         if ([attachmentImages count] >= 2) {
             self.paperClipView.hidden = NO;
             self.attachment2FrameView.hidden = NO;
             self.attachment2ImageView.image = [attachmentImages objectAtIndex:1];
-            
+
             if ([attachmentImages count] >= 3) {
                 self.paperClipView.hidden = NO;
                 self.attachment3FrameView.hidden = NO;
@@ -820,19 +820,19 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     if ([UIDevice de_isIOS5] == NO || self.alwaysUseDETwitterCredentials == YES) {
         return;
     }
-    
+
     NSArray *accounts = [DETweetPoster accounts];
-    
+
     if ([accounts count] == 0) {
         self.twitterAccount = nil;
         return;
     }
-    
+
     NSString *accountIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:DETweetLastAccountIdentifier];
     if (self.twitterAccount) {
         accountIdentifier = ((ACAccount *)self.twitterAccount).identifier;
     }
-    
+
     if ([accountIdentifier length] > 0) {
         NSUInteger index = [accounts indexOfObjectPassingTest:^BOOL(ACAccount *account, NSUInteger idx, BOOL *stop) {
             *stop = [account.identifier isEqualToString:accountIdentifier];
@@ -845,11 +845,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
             self.twitterAccount = nil;  // Clear out the invalid account.
         }
     }
-    
+
     if (self.twitterAccount == nil) {
         self.twitterAccount = [accounts objectAtIndex:0];  // Safe, since we tested for [accounts count] == 0 above.
     }
-    
+
     [[NSUserDefaults standardUserDefaults] setObject:((ACAccount *)self.twitterAccount).identifier forKey:DETweetLastAccountIdentifier];
 }
 
@@ -884,7 +884,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         self.accountPickerView.alpha = 1.0f;
         [self.textView resignFirstResponder];
     }
-    
+
     else {  // iPad
         if (self.accountPickerPopoverController == nil) {
             DETweetAccountSelectorViewController *contentViewController = [[[DETweetAccountSelectorViewController alloc] init] autorelease];
@@ -966,11 +966,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     ACAccount *account = [[DETweetPoster accounts] objectAtIndex:row];
-    
+
     if ([account.accountDescription isEqualToString:@"Primary Account"]) {
         [self.accountPickerView selectRow:row inComponent:0 animated:NO];
     }
-    
+
     return account.accountDescription;
 }
 
@@ -1004,7 +1004,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
                                                otherButtonTitles:NSLocalizedString(@"Try Again", @""), nil] autorelease];
     alertView.tag = DETweetComposeViewControllerCannotSendAlert;
     [alertView show];
-    
+
     self.sendButton.enabled = YES;
 }
 
@@ -1012,8 +1012,13 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)tweetFailedAuthentication:(DETweetPoster *)tweetPoster
 {
     [OAuth clearCrendentials];
-    [self dismissModalViewControllerAnimated:YES];
-    
+    if (self.completionHandler) {
+        self.completionHandler(DETweetComposeViewControllerResultFailed);
+    }
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+
     [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cannot Send Tweet", @"")
                                  message:NSLocalizedString(@"Unable to login to Twitter with existing credentials. Try again with new credentials.", @"")
                                 delegate:nil
@@ -1025,14 +1030,14 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)tweetSucceeded:(DETweetPoster *)tweetPoster
 {
     CGFloat yOffset = -(self.view.bounds.size.height + CGRectGetMaxY(self.cardView.frame) + 10.0f);
-    
+
     [UIView animateWithDuration:0.35f
                      animations:^ {
                          self.cardView.frame = CGRectOffset(self.cardView.frame, 0.0f, yOffset);
                          self.paperClipView.frame = CGRectOffset(self.paperClipView.frame, 0.0f, yOffset);
                      }];
-    
-    
+
+
     if (self.completionHandler) {
         self.completionHandler(DETweetComposeViewControllerResultDone);
     }
@@ -1047,9 +1052,9 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (IBAction)send
 {
     self.sendButton.enabled = NO;
-    
+
     NSString *tweet = self.textView.text;
-    
+
     for (NSURL *url in self.urls) {
         NSString *urlString = [url absoluteString];
         if ([tweet length] > 0) {
@@ -1057,7 +1062,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         }
         tweet = [tweet stringByAppendingString:urlString];
     }
-    
+
     DETweetPoster *tweetPoster = [[[DETweetPoster alloc] init] autorelease];
     tweetPoster.delegate = self;
     [tweetPoster postTweet:tweet withImages:self.images fromAccount:self.twitterAccount];
@@ -1088,7 +1093,12 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     // This gets called if there's an error sending the tweet.
 {
     if (alertView.tag == DETweetComposeViewControllerNoAccountsAlert) {
-        [self dismissModalViewControllerAnimated:YES];
+        if (self.completionHandler) {
+            self.completionHandler(DETweetComposeViewControllerResultFailed);
+        }
+        else {
+            [self dismissModalViewControllerAnimated:YES];
+        }
     }
     else if (alertView.tag == DETweetComposeViewControllerCannotSendAlert) {
         if (buttonIndex == 1) {
@@ -1111,7 +1121,12 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 - (void)twitterDidNotLogin:(BOOL)cancelled
 {
         // Oddly this is not an optional method in the protocol.
-    [self dismissModalViewControllerAnimated:YES];
+    if (self.completionHandler) {
+        self.completionHandler(DETweetComposeViewControllerResultFailed);
+    }
+    else {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 @end
